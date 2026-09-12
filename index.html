@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PIE Classes | Study Portal</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f5fa;
+      color: #17243a;
+    }
+
+    header {
+      background: #142d4e;
+      color: white;
+      text-align: center;
+      padding: 32px 16px;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    .panel {
+      background: white;
+      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 3px 15px #152b4610;
+    }
+
+    input, button {
+      font: inherit;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid #b9c5d5;
+      margin: 8px 0 12px;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      background: #2463a6;
+      color: white;
+    }
+
+    button:hover {
+      background: #174b83;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fit, minmax(130px, 1fr)
+      );
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .subjects a {
+      display: block;
+      padding: 16px;
+      background: #eaf1fb;
+      color: #174b83;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .subjects a:hover {
+      background: #d8e6f8;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #message {
+      color: #b42318;
+    }
+
+    footer {
+      text-align: center;
+      color: #66758a;
+      padding: 24px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>PIE Classes</h1>
+    <p>Your study materials, all in one place.</p>
+  </header>
+
+  <main>
+    <section id="login" class="panel">
+      <h2>Student Login</h2>
+      <p>Enter your password to continue.</p>
+
+      <form id="loginForm">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter password"
+          required
+        >
+        <button type="submit">Unlock Study Portal</button>
+      </form>
+
+      <p id="message" role="status"></p>
+    </section>
+
+    <section id="portal" class="panel hidden">
+      <h2 id="pageTitle">Choose your board</h2>
+
+      <div id="boards" class="grid"></div>
+      <div id="classes" class="grid"></div>
+      <div id="subjects" class="grid subjects"></div>
+
+      <button id="back" class="hidden" style="margin-top:16px">
+        Back
+      </button>
+    </section>
+  </main>
+
+  <footer>PIE Classes · Student Study Portal</footer>
+
+  <script>
+    // BASIC PASSWORD GATE ONLY.
+    // Replace this with your own password.
+    const PASSWORD = "CHANGE_ME";
+
+    const classes = ["VI", "VII", "VIII", "IX", "X"];
+
+    const icseSubjects = [
+      "Mathematics",
+      "Physics",
+      "Chemistry",
+      "Biology",
+      "History and Civics",
+      "Geography",
+      "Hindi",
+      "English Literature",
+      "English Language",
+      "Commerce",
+      "Economics"
+    ];
+
+    const cbseSubjects = [
+      "Mathematics",
+      "Science",
+      "History and Civics",
+      "Geography",
+      "Hindi",
+      "English Literature",
+      "English Language",
+      "Commerce",
+      "Economics"
+    ];
+
+    const boards = {
+      ICSE: icseSubjects,
+      CBSE: cbseSubjects
+    };
+
+    // Replace each empty link with a Google Drive folder URL.
+    const materials = {
+      ICSE: {
+        VI: {},
+        VII: {},
+        VIII: {},
+        IX: {},
+        X: {}
+      },
+      CBSE: {
+        VI: {},
+        VII: {},
+        VIII: {},
+        IX: {},
+        X: {}
+      }
+    };
+
+    const login = document.getElementById("login");
+    const portal = document.getElementById("portal");
+    const boardList = document.getElementById("boards");
+    const classList = document.getElementById("classes");
+    const subjectList = document.getElementById("subjects");
+    const pageTitle = document.getElementById("pageTitle");
+    const back = document.getElementById("back");
+    const message = document.getElementById("message");
+
+    let selectedBoard = "";
+    let selectedClass = "";
+    let currentPage = "boards";
+
+    document.getElementById("loginForm")
+      .addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const entered =
+          document.getElementById("password").value;
+
+        if (entered === PASSWORD) {
+          login.classList.add("hidden");
+          portal.classList.remove("hidden");
+          message.textContent = "";
+          showBoards();
+        } else {
+          message.textContent =
+            "Incorrect password. Please try again.";
+        }
+      });
+
+    function clearLists() {
+      boardList.innerHTML = "";
+      classList.innerHTML = "";
+      subjectList.innerHTML = "";
+    }
+
+    function makeButton(label, parent, action) {
+      const button = document.createElement("button");
+      button.textContent = label;
+      button.addEventListener("click", action);
+      parent.appendChild(button);
+    }
+
+    function showBoards() {
+      clearLists();
+
+      currentPage = "boards";
+      pageTitle.textContent = "Choose your board";
+      back.classList.add("hidden");
+
+      Object.keys(boards).forEach(function(board) {
+        makeButton(board, boardList, function() {
+          selectedBoard = board;
+          showClasses();
+        });
+      });
+    }
+
+    function showClasses() {
+      clearLists();
+
+      currentPage = "classes";
+      pageTitle.textContent =
+        selectedBoard + " | Choose your class";
+
+      back.classList.remove("hidden");
+
+      classes.forEach(function(cls) {
+        makeButton("Class " + cls, classList, function() {
+          selectedClass = cls;
+          showSubjects();
+        });
+      });
+    }
+
+    function showSubjects() {
+      clearLists();
+
+      currentPage = "subjects";
+      pageTitle.textContent =
+        selectedBoard + " | Class " + selectedClass;
+
+      boards[selectedBoard].forEach(function(subject) {
+        const link = document.createElement("a");
+        link.textContent = subject;
+
+        const folder =
+          materials[selectedBoard][selectedClass][subject];
+
+        if (folder) {
+          link.href = folder;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        } else {
+          link.href = "#";
+
+          link.addEventListener("click", function(event) {
+            event.preventDefault();
+            alert(
+              "Study materials for this subject are coming soon."
+            );
+          });
+        }
+
+        subjectList.appendChild(link);
+      });
+    }
+
+    back.addEventListener("click", function() {
+      if (currentPage === "subjects") {
+        showClasses();
+      } else if (currentPage === "classes") {
+        showBoards();
+      }
+    });
+  </script>
+</body>
+</html>
