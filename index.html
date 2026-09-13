@@ -1,12 +1,4 @@
-from pathlib import Path
-import zipfile, shutil, textwrap
-
-base = Path("/mnt/data")
-logo_src = Path("/mnt/data/cfb52d2c-f924-4c8f-8a15-52f00ef02b11.png")
-site_dir = base / "PIE_Classes_Website"
-site_dir.mkdir(exist_ok=True)
-
-html = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -402,17 +394,4 @@ function showClasses(){
 </script>
 </body>
 </html>
-'''
-
-(site_dir / "index.html").write_text(html, encoding="utf-8")
-shutil.copy2(logo_src, site_dir / "pie-logo.png")
-
-zip_path = base / "PIE_Classes_Website.zip"
-with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
-    z.write(site_dir / "index.html", "index.html")
-    z.write(site_dir / "pie-logo.png", "pie-logo.png")
-
-print("Created:")
-print(site_dir / "index.html")
-print(site_dir / "pie-logo.png")
 print(zip_path)
