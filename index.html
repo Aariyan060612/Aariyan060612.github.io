@@ -1,323 +1,418 @@
+from pathlib import Path
+import zipfile, shutil, textwrap
 
-<!DOCTYPE html>
+base = Path("/mnt/data")
+logo_src = Path("/mnt/data/cfb52d2c-f924-4c8f-8a15-52f00ef02b11.png")
+site_dir = base / "PIE_Classes_Website"
+site_dir.mkdir(exist_ok=True)
+
+html = r'''<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>PIE Classes | Study Portal</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f5fa;
-      color: #17243a;
-    }
-
-    header {
-      background: #142d4e;
-      color: white;
-      text-align: center;
-      padding: 32px 16px;
-    }
-
-    header h1 {
-      margin: 0 0 8px;
-    }
-
-    main {
-      max-width: 760px;
-      margin: 30px auto;
-      padding: 0 16px;
-    }
-
-    .panel {
-      background: white;
-      padding: 24px;
-      border-radius: 14px;
-      box-shadow: 0 3px 15px #152b4610;
-    }
-
-    input, button {
-      font: inherit;
-      padding: 12px;
-      border-radius: 8px;
-    }
-
-    input {
-      width: 100%;
-      border: 1px solid #b9c5d5;
-      margin: 8px 0 12px;
-    }
-
-    button {
-      cursor: pointer;
-      border: 0;
-      background: #2463a6;
-      color: white;
-    }
-
-    button:hover {
-      background: #174b83;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fit, minmax(130px, 1fr)
-      );
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .subjects a {
-      display: block;
-      padding: 16px;
-      background: #eaf1fb;
-      color: #174b83;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-    .subjects a:hover {
-      background: #d8e6f8;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #message {
-      color: #b42318;
-    }
-
-    footer {
-      text-align: center;
-      color: #66758a;
-      padding: 24px;
-      font-size: 14px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIE Classes | Study Portal</title>
+<style>
+:root{
+  --red:#d71920;
+  --dark-red:#a90f16;
+  --yellow:#ffc928;
+  --gold:#f2b900;
+  --cream:#fff9e8;
+  --ink:#241b12;
+  --white:#ffffff;
+  --shadow:0 14px 35px rgba(80,35,0,.14);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,201,40,.28), transparent 28%),
+    radial-gradient(circle at 90% 15%, rgba(215,25,32,.12), transparent 26%),
+    linear-gradient(135deg,#fffdf4,#fff4c9);
+  min-height:100vh;
+}
+header{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#9e1016 0%,#d71920 55%,#f0b900 100%);
+  color:white;
+  padding:28px 20px 34px;
+  box-shadow:0 8px 25px rgba(120,0,0,.2);
+}
+header:before,header:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.1);
+}
+header:before{width:260px;height:260px;right:-80px;top:-140px}
+header:after{width:180px;height:180px;left:-70px;bottom:-110px}
+.header-inner{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  position:relative;
+  z-index:1;
+}
+.logo{
+  width:105px;height:105px;
+  object-fit:cover;
+  border-radius:50%;
+  border:5px solid white;
+  box-shadow:0 8px 22px rgba(0,0,0,.2);
+  background:white;
+}
+.brand h1{margin:0;font-size:clamp(28px,5vw,48px);letter-spacing:.5px}
+.brand p{margin:6px 0 0;font-size:15px;opacity:.95}
+.tag{
+  display:inline-block;
+  margin-top:12px;
+  padding:7px 12px;
+  border-radius:999px;
+  background:var(--yellow);
+  color:#5c2500;
+  font-weight:800;
+  font-size:13px;
+}
+main{max-width:1100px;margin:0 auto;padding:30px 18px 60px}
+.panel{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(215,25,32,.1);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:26px;
+  margin-bottom:22px;
+}
+.hidden{display:none!important}
+h2{margin:0 0 8px;color:var(--dark-red);font-size:27px}
+.subtitle{margin:0 0 22px;color:#6d5a47}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:14px;
+}
+.card{
+  border:0;
+  min-height:105px;
+  border-radius:18px;
+  padding:18px;
+  cursor:pointer;
+  text-align:left;
+  color:#35140d;
+  background:linear-gradient(145deg,#fff8d9,#ffd84d);
+  box-shadow:0 8px 18px rgba(136,84,0,.12);
+  transition:.2s transform,.2s box-shadow;
+  font-weight:800;
+  font-size:17px;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 13px 24px rgba(136,84,0,.2)}
+.card .icon{font-size:27px;display:block;margin-bottom:8px}
+.subject{
+  background:linear-gradient(145deg,#fff,#fff5c7);
+  border:2px solid rgba(215,25,32,.12);
+}
+.subject:hover{border-color:var(--red)}
+.back{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  border:0;
+  background:#fff0b2;
+  color:#7b1a13;
+  padding:10px 15px;
+  border-radius:999px;
+  font-weight:800;
+  cursor:pointer;
+  margin-bottom:18px;
+}
+.notice{
+  padding:13px 16px;
+  border-left:5px solid var(--red);
+  background:#fff7d7;
+  border-radius:10px;
+  margin-top:16px;
+  color:#604b32;
+}
+footer{text-align:center;padding:25px;color:#7d6b57;font-size:13px}
+input[type=password]{
+  width:100%;
+  max-width:420px;
+  padding:15px 17px;
+  border:2px solid #ead58a;
+  border-radius:14px;
+  font-size:17px;
+  outline:none;
+}
+input[type=password]:focus{border-color:var(--red)}
+.primary{
+  border:0;
+  margin-top:12px;
+  padding:14px 22px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--red),#ed3b24);
+  color:white;
+  font-weight:900;
+  font-size:16px;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(215,25,32,.22);
+}
+.error{color:var(--red);font-weight:800;margin-top:10px;min-height:20px}
+.small{font-size:13px;color:#806d56}
+@media(max-width:600px){
+  .header-inner{flex-direction:column;text-align:center}
+  .logo{width:90px;height:90px}
+  .panel{padding:20px}
+}
+</style>
 </head>
-
 <body>
-  <header>
-    <h1>PIE Classes</h1>
-    <p>Your study materials, all in one place.</p>
-  </header>
 
-  <main>
-    <section id="login" class="panel">
-      <h2>Student Login</h2>
-      <p>Enter your password to continue.</p>
+<header>
+  <div class="header-inner">
+    <img class="logo" src="pie-logo.png" alt="PIE Classes logo">
+    <div class="brand">
+      <h1>PIE Classes</h1>
+      <p>Prateeti Institute for Excellence</p>
+      <span class="tag">Progress towards Perfection</span>
+    </div>
+  </div>
+</header>
 
-      <form id="loginForm">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="Enter password"
-          required
-        >
-        <button type="submit">Unlock Study Portal</button>
-      </form>
+<main>
+  <section id="login" class="panel">
+    <h2>🔐 Student Access</h2>
+    <p class="subtitle">Enter the PIE Classes study portal password to continue.</p>
+    <input id="password" type="password" placeholder="Enter password" autocomplete="off">
+    <br>
+    <button class="primary" onclick="login()">Enter Study Portal →</button>
+    <div id="loginError" class="error"></div>
+  </section>
 
-      <p id="message" role="status"></p>
-    </section>
+  <section id="portal" class="panel hidden">
+    <div id="boardScreen">
+      <h2>Choose your Board</h2>
+      <p class="subtitle">Select your curriculum to continue.</p>
+      <div class="grid">
+        <button class="card" onclick="chooseBoard('ICSE')"><span class="icon">📘</span>ICSE</button>
+        <button class="card" onclick="chooseBoard('CBSE')"><span class="icon">📕</span>CBSE</button>
+      </div>
+    </div>
 
-    <section id="portal" class="panel hidden">
-      <h2 id="pageTitle">Choose your board</h2>
+    <div id="classScreen" class="hidden">
+      <button class="back" onclick="showBoards()">← Back to Boards</button>
+      <h2 id="classTitle"></h2>
+      <p class="subtitle">Choose your class.</p>
+      <div id="classGrid" class="grid"></div>
+    </div>
 
-      <div id="boards" class="grid"></div>
-      <div id="classes" class="grid"></div>
-      <div id="subjects" class="grid subjects"></div>
+    <div id="subjectScreen" class="hidden">
+      <button class="back" onclick="showClasses()">← Back to Classes</button>
+      <h2 id="subjectTitle"></h2>
+      <p class="subtitle">Choose a subject to open its study materials.</p>
+      <div id="subjectGrid" class="grid"></div>
+      <div class="notice">📚 Study materials open in Google Drive. Make sure the Drive folder is shared with the students who need access.</div>
+    </div>
+  </section>
+</main>
 
-      <button id="back" class="hidden" style="margin-top:16px">
-        Back
-      </button>
-    </section>
-  </main>
+<footer>© 2026 PIE Classes • Prateeti Institute for Excellence</footer>
 
-  <footer>PIE Classes · Student Study Portal</footer>
+<script>
+/* Change this to your chosen website password. */
+const PASSWORD = "CHANGE_ME";
 
-  <script>
-    // BASIC PASSWORD GATE ONLY.
-    // Replace this with your own password.
-    const PASSWORD = "CHANGE_ME";
-
-    const classes = ["VI", "VII", "VIII", "IX", "X"];
-
-    const icseSubjects = [
-      "Mathematics",
-      "Physics",
-      "Chemistry",
-      "Biology",
-      "History and Civics",
-      "Geography",
-      "Hindi",
-      "English Literature",
-      "English Language",
-      "Commerce",
-      "Economics"
-    ];
-
-    const cbseSubjects = [
-      "Mathematics",
-      "Science",
-      "History and Civics",
-      "Geography",
-      "Hindi",
-      "English Literature",
-      "English Language",
-      "Commerce",
-      "Economics"
-    ];
-
-    const boards = {
-      ICSE: icseSubjects,
-      CBSE: cbseSubjects
-    };
-
-    // Replace each empty link with a Google Drive folder URL.
-    const materials = {
-      ICSE: {
-        VI: {},
-        VII: {},
-        VIII: {},
-        IX: {},
-        X: {}
-      },
-      CBSE: {
-        VI: {},
-        VII: {},
-        VIII: {},
-        IX: {},
-        X: {}
-      }
-    };
-
-    const login = document.getElementById("login");
-    const portal = document.getElementById("portal");
-    const boardList = document.getElementById("boards");
-    const classList = document.getElementById("classes");
-    const subjectList = document.getElementById("subjects");
-    const pageTitle = document.getElementById("pageTitle");
-    const back = document.getElementById("back");
-    const message = document.getElementById("message");
-
-    let selectedBoard = "";
-    let selectedClass = "";
-    let currentPage = "boards";
-
-    document.getElementById("loginForm")
-      .addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        const entered =
-          document.getElementById("password").value;
-
-        if (entered === PASSWORD) {
-          login.classList.add("hidden");
-          portal.classList.remove("hidden");
-          message.textContent = "";
-          showBoards();
-        } else {
-          message.textContent =
-            "Incorrect password. Please try again.";
-        }
-      });
-
-    function clearLists() {
-      boardList.innerHTML = "";
-      classList.innerHTML = "";
-      subjectList.innerHTML = "";
+const data = {
+  ICSE: {
+    "Class VI": {
+      "Mathematics":"https://drive.google.com/drive/folders/1zpaFIelj4HyVpw_X_2yZ-WIKD2c5Uvox?usp=drive_link",
+      "Physics":"https://drive.google.com/drive/folders/1csnIwewGLgAouKqEIW_pdVZc4vAD2dv3?usp=drive_link",
+      "Chemistry":"https://drive.google.com/drive/folders/1KxW62mKkjV31o7TLCSvfzsghQbADQyj7?usp=drive_link",
+      "Biology":"https://drive.google.com/drive/folders/1T7e32YdmZZA3Xy_9MyieUIF2dI0abEZr?usp=drive_link",
+      "History and Civics":"https://drive.google.com/drive/folders/1WYX0xgaSXqtuTcXVwMx1ogKkthYcQfJE?usp=drive_link",
+      "Geography":"https://drive.google.com/drive/folders/1hz6FNlBOQ9jOOSxDGVNXclCJY-DK2Tc8?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/13EhFiwgYl46-c-EQNML4ixKfqOHWFCf1?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/18AE0m620ren6_R8WIKlTWZ2IFdDMU8VK?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/1qgSqscx9Atx6jXB3N3humR3yynvQU26t?usp=drive_link",
+      "Commerce":"https://drive.google.com/drive/folders/1jMx-PX6d0eHlnREAt_G9g-C4y2izuDrn?usp=drive_link",
+      "Economics":"https://drive.google.com/drive/folders/1d5qfhKPVIarKf1PsOMt9jdOdFE9gHD5r?usp=drive_link"
+    },
+    "Class VII": {
+      "Mathematics":"https://drive.google.com/drive/folders/1U8TnRoWPpR-1rXHsEN8OFPyl9KLXtxg4?usp=drive_link",
+      "Physics":"https://drive.google.com/drive/folders/1D0Y--VHXFJh-iaO92ZeCSnxKHc8frXQY?usp=drive_link",
+      "Chemistry":"https://drive.google.com/drive/folders/1BYX4tWGb_tcJOJleTwVUhMydwqo_Fe5-?usp=drive_link",
+      "Biology":"https://drive.google.com/drive/folders/1U_Fmm1Vod8McFrMANqmCZoHnvDwvGSMf?usp=drive_link",
+      "History and Civics":"https://drive.google.com/drive/folders/1p_X1rtXoFE9PGBL19V4eOWJM9G_0W5tM?usp=drive_link",
+      "Geography":"https://drive.google.com/drive/folders/1nQPvXTUwEmMlgZ89Cb4FoauoBkuoOmwp?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/1Lq9cjkpi6XB0DTvFVnY87Ek3iU-6vm2T?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/1dMFp86Fr3cqr0HsJ2QFZGUk4Ea6Tbvfj?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/1bRmg6ynsNzHiW2fkrQuu0HZK7VzYfB0a?usp=drive_link",
+      "Commerce":"https://drive.google.com/drive/folders/1j1OzgI3aI2DYi6wnoreo7BopPrme26_5?usp=drive_link",
+      "Economics":"https://drive.google.com/drive/folders/151dOHuLjorAeImFmtWj5WSn-wEQZ3cPG?usp=drive_link"
+    },
+    "Class VIII": {
+      "Mathematics":"https://drive.google.com/drive/folders/1L92asJ7SxCwInWCBdMSF7CqcizmgAt_r?usp=drive_link",
+      "Physics":"https://drive.google.com/drive/folders/1y_TpRmnFymuos1GUSVM9xwhrXJizI17B?usp=drive_link",
+      "Chemistry":"https://drive.google.com/drive/folders/1l46lHOzeXIeDIqL5qG0i2Fmh-aPVt3VZ?usp=drive_link",
+      "Biology":"https://drive.google.com/drive/folders/1Fpofrr3JwNiykYEUFP2wntBPLk5Cwh_T?usp=drive_link",
+      "History and Civics":"https://drive.google.com/drive/folders/1_GQwSDeVwXekzLdIwwTECyYXxcXMRVmX?usp=drive_link",
+      "Geography":"https://drive.google.com/drive/folders/1z5S7FR5f9XprJqKef31flm3hDuKqaYzO?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/18g2WXwgtn3YO5XOmozqBdWvBPAtX5Yw4?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/10UWU1FSrZcA7daI_oQIx31fUNAr9pMIY?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/136RfBt5wHx9Hposp6Rm8hPK4va0qpU1p?usp=drive_link",
+      "Commerce":"https://drive.google.com/drive/folders/1Ma2u3Do82j6pVEA7JR3pwQxsXNVLS67W?usp=drive_link",
+      "Economics":"https://drive.google.com/drive/folders/1aNfYXB57-AjCKu7Jd8NAchjMuiIY_SOo?usp=drive_link"
+    },
+    "Class IX": {
+      "Mathematics":"https://drive.google.com/drive/folders/1gX3mIkPyPah62qNBhgceymdpB7N3PTs0?usp=drive_link",
+      "Physics":"https://drive.google.com/drive/folders/1I5wK8KzPEnrzGUNAZjbGPJ2vowrutax6?usp=drive_link",
+      "Chemistry":"https://drive.google.com/drive/folders/1M0lLobqZdZfE2cHlgRbPVWdUg0DYgtnY?usp=drive_link",
+      "Biology":"https://drive.google.com/drive/folders/1JZE5tgkOGXf4XZcttJxiu1WWgAkN_cjj?usp=drive_link",
+      "History and Civics":"https://drive.google.com/drive/folders/1hMHyK0tpU3tfRoVEzvWLmScrMUyTgCOo?usp=drive_link",
+      "Geography":"https://drive.google.com/drive/folders/1YE7wOk1NecgqKlBLf5liLL6g1tU-10xv?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/1Ci8zqKFiYn4I1ZEbCIDCRIqfF4hks9O4?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/156X_1VSBm7FHaI9_OtT8qcYjuhse-U1d?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/1fzkkkuLKabXgZ1bMljOT8Tbxq6ZR8u1x?usp=drive_link",
+      "Commerce":"https://drive.google.com/drive/folders/17dfmsrcYxj7AP7HPkpPZmfabExnOwiL-?usp=drive_link",
+      "Economics":"https://drive.google.com/drive/folders/1fzt0AT5iJu3di1_PU3cC-t32OgJE8hjN?usp=drive_link"
+    },
+    "Class X": {
+      "Mathematics":"https://drive.google.com/drive/folders/1hDcGx2L_K0FeY1ALEk-qh7Yi691HUmlS?usp=drive_link",
+      "Physics":"https://drive.google.com/drive/folders/1zLR2qUIpTYcGKcKac_vt6PnLRtU0sTlU?usp=drive_link",
+      "Chemistry":"https://drive.google.com/drive/folders/1qZxiBnGMdpGKP9JF3mBfYK47vvZlnzej?usp=drive_link",
+      "Biology":"https://drive.google.com/drive/folders/1P3W1CqXB9L6SMeiiUfH55ZtDAHz_CxPU?usp=drive_link",
+      "History and Civics":"https://drive.google.com/drive/folders/1urhlDj6sILj6NnZXbEhJKy-JNyn4auJw?usp=drive_link",
+      "Geography":"https://drive.google.com/drive/folders/1Po8U3D2PwpHDBGmuKmCquPmP27Cd5fIf?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/1VFB9WOQGmC52yAXKrQi7ZHoVupZqkF89?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/1wC-pcCiktkR3GJ0QVrK0znl-ETGbcqc0?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/16yiEO8u4un2bIYgRw4-QHGHN3sJ7gY3t?usp=drive_link",
+      "Commerce":"https://drive.google.com/drive/folders/1z4FIrxc1HIxCwaFVm08CSCqPEeTlwP5n?usp=drive_link",
+      "Economics":"https://drive.google.com/drive/folders/1ZNqOtBRKlEofAY-af2-qX0zX7Ay9z2k-?usp=drive_link"
     }
-
-    function makeButton(label, parent, action) {
-      const button = document.createElement("button");
-      button.textContent = label;
-      button.addEventListener("click", action);
-      parent.appendChild(button);
+  },
+  CBSE: {
+    "Class VI": {
+      "Mathematics":"https://drive.google.com/drive/folders/1zHCTJtyF3bgY5vBVVIyHyx_e1mSdqKmE?usp=drive_link",
+      "Science":"https://drive.google.com/drive/folders/1xIhhppT4d-d9-L_uMXkInftPMkZ_SlPb?usp=drive_link",
+      "Social Studies (SS)":"https://drive.google.com/drive/folders/1_1H4FES2xrskVV2oFqKWaFLkTOnchUqB?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/1e-T1V4Lz7ZF299bfjP64Y2rAIh7uj_R6?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/12eKinlR56akAS84NlNce_UByG7InQMWM?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/1dKMXxJVjZA9fBPmZcG0yydgZyjgfWyfL?usp=drive_link"
+    },
+    "Class VII": {
+      "Mathematics":"https://drive.google.com/drive/folders/17SCNcsJNwoiC-PSjmHH0X9n12b1zetUY?usp=drive_link",
+      "Science":"https://drive.google.com/drive/folders/1yIQZFXCuEcQzeWio2uuTf3JAD2c8p7WQ?usp=drive_link",
+      "Social Studies (SS)":"https://drive.google.com/drive/folders/1mUFnvJsUbi3jVFZRsxNCw_KtY1oYNpwj?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/1ISAx-AvOee6k_LrJI9OJRywp5jbcQ8c8?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/1rGCR5pKuQ-ffRbZGcwKjQmYZCPGcDICB?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/16d0HfQjjCAnY-cSguHf5r3RQJX6lbk7G?usp=drive_link"
+    },
+    "Class VIII": {
+      "Mathematics":"https://drive.google.com/drive/folders/1ed9tmk-Eh5DaA9qblxbUHU1yGS420fBG?usp=drive_link",
+      "Science":"https://drive.google.com/drive/folders/1Tz1MubS0rRtIuf9crRqyBTo0O0G0RW4V?usp=drive_link",
+      "Social Studies (SS)":"https://drive.google.com/drive/folders/1PXPzT7TuCq15Zjnzcs3MzgzgcVNgSJ7R?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/1tP49_XHUrF0XR_UgcW7CGC04TlhhLBRq?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/1yl-ZIQaZIQLGCr_WC830O6fD6SSIt_EC?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/1FGbHfqEA5oonKbsTEti-7wOG2xFPKsEQ?usp=drive_link"
+    },
+    "Class IX": {
+      "Mathematics":"https://drive.google.com/drive/folders/1dxzbs6VRkKZoaSLKGObZPm4oVx-QWaVR?usp=drive_link",
+      "Science":"https://drive.google.com/drive/folders/1vzEU85PQWYOG4uSKCb9oEnN_dNK6Aa-5?usp=drive_link",
+      "Social Studies (SS)":"https://drive.google.com/drive/folders/1UQS-iV6Qe5BFd6xTW1knCcbgaln6jXRP?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/1eJEZ_DlvbVGMF3LZvyVdnKlyVEr_LX2I?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/1KBvXOkCb9H8FU9wai-yZYpdmTPjNf1kQ?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/1BACUSjK8EjIce_1fqo2VYmkEVK8ix0Kt?usp=drive_link"
+    },
+    "Class X": {
+      "Mathematics":"https://drive.google.com/drive/folders/1MP1MBbPrihVX2Gb1f0mE2_mIRkPvGDOl?usp=drive_link",
+      "Science":"https://drive.google.com/drive/folders/15n165icVfdyd0hudK-m0J8BGT4t39CwM?usp=drive_link",
+      "Social Studies (SS)":"https://drive.google.com/drive/folders/18ztqBIVY39HLN-1MgWnJKoGGP_NRwLSE?usp=drive_link",
+      "Hindi":"https://drive.google.com/drive/folders/10BP0q921Q9cBE67bk61IV_TRQ2H4-zkW?usp=drive_link",
+      "English Literature":"https://drive.google.com/drive/folders/1nzE9Y17eCUUtbepMadyTqlQztmp11R9k?usp=drive_link",
+      "English Language":"https://drive.google.com/drive/folders/1Lrhs-UHhfC4ewyFPPRhzHI9Udws1sc5S?usp=drive_link"
     }
+  }
+};
 
-    function showBoards() {
-      clearLists();
+let selectedBoard = "";
+let selectedClass = "";
 
-      currentPage = "boards";
-      pageTitle.textContent = "Choose your board";
-      back.classList.add("hidden");
+function login(){
+  const value = document.getElementById("password").value;
+  if(value === PASSWORD){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("portal").classList.remove("hidden");
+    document.getElementById("loginError").textContent = "";
+  }else{
+    document.getElementById("loginError").textContent = "Incorrect password. Please try again.";
+  }
+}
 
-      Object.keys(boards).forEach(function(board) {
-        makeButton(board, boardList, function() {
-          selectedBoard = board;
-          showClasses();
-        });
-      });
-    }
+document.getElementById("password").addEventListener("keydown", e=>{
+  if(e.key === "Enter") login();
+});
 
-    function showClasses() {
-      clearLists();
+function chooseBoard(board){
+  selectedBoard = board;
+  document.getElementById("boardScreen").classList.add("hidden");
+  document.getElementById("subjectScreen").classList.add("hidden");
+  document.getElementById("classScreen").classList.remove("hidden");
+  document.getElementById("classTitle").textContent = board + " Classes";
+  const grid = document.getElementById("classGrid");
+  grid.innerHTML = "";
+  Object.keys(data[board]).forEach(cls=>{
+    const button = document.createElement("button");
+    button.className = "card";
+    button.innerHTML = `<span class="icon">🎓</span>${cls}`;
+    button.onclick = ()=>chooseClass(cls);
+    grid.appendChild(button);
+  });
+}
 
-      currentPage = "classes";
-      pageTitle.textContent =
-        selectedBoard + " | Choose your class";
+function chooseClass(cls){
+  selectedClass = cls;
+  document.getElementById("classScreen").classList.add("hidden");
+  document.getElementById("subjectScreen").classList.remove("hidden");
+  document.getElementById("subjectTitle").textContent = `${selectedBoard} • ${selectedClass}`;
+  const grid = document.getElementById("subjectGrid");
+  grid.innerHTML = "";
 
-      back.classList.remove("hidden");
+  Object.entries(data[selectedBoard][selectedClass]).forEach(([subject,url])=>{
+    const button = document.createElement("button");
+    button.className = "card subject";
+    button.innerHTML = `<span class="icon">📚</span>${subject}`;
+    button.onclick = ()=>window.open(url, "_blank", "noopener,noreferrer");
+    grid.appendChild(button);
+  });
+}
 
-      classes.forEach(function(cls) {
-        makeButton("Class " + cls, classList, function() {
-          selectedClass = cls;
-          showSubjects();
-        });
-      });
-    }
-
-    function showSubjects() {
-      clearLists();
-
-      currentPage = "subjects";
-      pageTitle.textContent =
-        selectedBoard + " | Class " + selectedClass;
-
-      boards[selectedBoard].forEach(function(subject) {
-        const link = document.createElement("a");
-        link.textContent = subject;
-
-        const folder =
-          materials[selectedBoard][selectedClass][subject];
-
-        if (folder) {
-          link.href = folder;
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-        } else {
-          link.href = "#";
-
-          link.addEventListener("click", function(event) {
-            event.preventDefault();
-            alert(
-              "Study materials for this subject are coming soon."
-            );
-          });
-        }
-
-        subjectList.appendChild(link);
-      });
-    }
-
-    back.addEventListener("click", function() {
-      if (currentPage === "subjects") {
-        showClasses();
-      } else if (currentPage === "classes") {
-        showBoards();
-      }
-    });
-  </script>
+function showBoards(){
+  document.getElementById("classScreen").classList.add("hidden");
+  document.getElementById("subjectScreen").classList.add("hidden");
+  document.getElementById("boardScreen").classList.remove("hidden");
+}
+function showClasses(){
+  document.getElementById("subjectScreen").classList.add("hidden");
+  document.getElementById("classScreen").classList.remove("hidden");
+}
+</script>
 </body>
 </html>
+'''
+
+(site_dir / "index.html").write_text(html, encoding="utf-8")
+shutil.copy2(logo_src, site_dir / "pie-logo.png")
+
+zip_path = base / "PIE_Classes_Website.zip"
+with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+    z.write(site_dir / "index.html", "index.html")
+    z.write(site_dir / "pie-logo.png", "pie-logo.png")
+
+print("Created:")
+print(site_dir / "index.html")
+print(site_dir / "pie-logo.png")
+print(zip_path)
