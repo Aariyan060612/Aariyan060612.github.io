@@ -5,127 +5,118 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PIE Classes | Study Portal</title>
-
 <style>
-:root {
-  --red: #d71920;
-  --dark-red: #a90f16;
-  --yellow: #ffc928;
-  --gold: #f2b900;
-  --cream: #fff9e8;
-  --ink: #241b12;
-  --white: #ffffff;
-  --shadow: 0 14px 35px rgba(80,35,0,.14);
+:root{
+  --red:#d71920;
+  --dark-red:#a90f16;
+  --yellow:#ffc928;
+  --cream:#fff9e8;
+  --ink:#241b12;
+  --shadow:0 14px 35px rgba(80,35,0,.14);
 }
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: Inter, Segoe UI, Arial, sans-serif;
-  color: var(--ink);
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  color:var(--ink);
   background:
-    radial-gradient(circle at 10% 10%, rgba(255,201,40,.28), transparent 28%),
-    radial-gradient(circle at 90% 15%, rgba(215,25,32,.12), transparent 26%),
+    radial-gradient(circle at 10% 10%,rgba(255,201,40,.28),transparent 28%),
+    radial-gradient(circle at 90% 15%,rgba(215,25,32,.12),transparent 26%),
     linear-gradient(135deg,#fffdf4,#fff4c9);
-  min-height: 100vh;
+  min-height:100vh;
 }
-
-header {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg,#9e1016 0%,#d71920 55%,#f0b900 100%);
-  color: white;
-  padding: 28px 20px 34px;
-  box-shadow: 0 8px 25px rgba(120,0,0,.2);
+header{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#9e1016 0%,#d71920 55%,#f0b900 100%);
+  color:white;
+  padding:28px 20px 34px;
+  box-shadow:0 8px 25px rgba(120,0,0,.2);
 }
-
-header:before, header:after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255,255,255,.1);
+header:before,header:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.1);
 }
-
-header:before { width:260px; height:260px; right:-80px; top:-140px; }
-header:after { width:180px; height:180px; left:-70px; bottom:-110px; }
-
-.header-inner {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  position: relative;
-  z-index: 1;
+header:before{width:260px;height:260px;right:-80px;top:-140px}
+header:after{width:180px;height:180px;left:-70px;bottom:-110px}
+.header-inner{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  position:relative;
+  z-index:1;
 }
-
-.logo {
-  width: 105px;
-  height: 105px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 5px solid white;
-  box-shadow: 0 8px 22px rgba(0,0,0,.2);
-  background: white;
+.logo{
+  width:105px;height:105px;
+  object-fit:cover;
+  border-radius:50%;
+  border:5px solid white;
+  box-shadow:0 8px 22px rgba(0,0,0,.2);
+  background:white;
 }
-
-.brand h1 { margin:0; font-size:clamp(28px,5vw,48px); letter-spacing:.5px; }
-.brand p { margin:6px 0 0; font-size:15px; opacity:.95; }
-
-.tag {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  background: var(--yellow);
-  color: #5c2500;
-  font-weight: 800;
-  font-size: 13px;
+.brand h1{margin:0;font-size:clamp(28px,5vw,48px);letter-spacing:.5px}
+.brand p{margin:6px 0 0;font-size:15px;opacity:.95}
+.tag{
+  display:inline-block;
+  margin-top:12px;
+  padding:7px 12px;
+  border-radius:999px;
+  background:var(--yellow);
+  color:#5c2500;
+  font-weight:800;
+  font-size:13px;
 }
-
-main { max-width:1100px; margin:0 auto; padding:30px 18px 60px; }
-
-.panel {
-  background: rgba(255,255,255,.92);
-  border: 1px solid rgba(215,25,32,.1);
-  border-radius: 24px;
-  box-shadow: var(--shadow);
-  padding: 26px;
-  margin-bottom: 22px;
+main{max-width:1100px;margin:0 auto;padding:30px 18px 60px}
+.panel{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(215,25,32,.1);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:26px;
+  margin-bottom:22px;
 }
-
-.hidden { display:none!important; }
-h2 { margin:0 0 8px; color:var(--dark-red); font-size:27px; }
-.subtitle { margin:0 0 22px; color:#6d5a47; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(170px,1fr));
-  gap: 14px;
+.hidden{display:none!important}
+h2{margin:0 0 8px;color:var(--dark-red);font-size:27px}
+.subtitle{margin:0 0 22px;color:#6d5a47}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:14px;
 }
-
-.card {
-  border: 0;
-  min-height: 105px;
-  border-radius: 18px;
-  padding: 18px;
-  cursor: pointer;
-  text-align: left;
-  color: #35140d;
-  background: linear-gradient(145deg,#fff8d9,#ffd84d);
-  box-shadow: 0 8px 18px rgba(136,84,0,.12);
-  transition: .2s transform,.2s box-shadow;
-  font-weight: 800;
-  font-size: 17px;
+.card{
+  border:0;
+  min-height:105px;
+  border-radius:18px;
+  padding:18px;
+  cursor:pointer;
+  text-align:left;
+  color:#35140d;
+  background:linear-gradient(145deg,#fff8d9,#ffd84d);
+  box-shadow:0 8px 18px rgba(136,84,0,.12);
+  transition:transform .2s,box-shadow .2s;
+  font-weight:800;
+  font-size:17px;
 }
-
-.card:hover { transform:translateY(-4px); box-shadow:0 13px 24px rgba(136,84,0,.2); }
-.card .icon { font-size:27px; display:block; margin-bottom:8px; }
-.subject { background:linear-gradient(145deg,#fff,#fff5c7); border:2px solid rgba(215,25,32,.12); }
-.subject:hover { border-color:var(--red); }
-
-.back {
+.card:hover{transform:translateY(-4px);box-shadow:0 13px 24px rgba(136,84,0,.2)}
+.card:focus-visible,.back:focus-visible,.primary:focus-visible{
+  outline:3px solid #241b12;
+  outline-offset:3px;
+}
+.card .icon{font-size:27px;display:block;margin-bottom:8px}
+.subject{
+  background:linear-gradient(145deg,#fff,#fff5c7);
+  border:2px solid rgba(215,25,32,.12);
+}
+.subject:hover{border-color:var(--red)}
+.special{
+  background:linear-gradient(145deg,#fff0ed,#ffd2c5);
+  border:2px solid rgba(215,25,32,.22);
+}
+.back{
   display:inline-flex;
   align-items:center;
   gap:7px;
@@ -138,8 +129,7 @@ h2 { margin:0 0 8px; color:var(--dark-red); font-size:27px; }
   cursor:pointer;
   margin-bottom:18px;
 }
-
-.notice {
+.notice{
   padding:13px 16px;
   border-left:5px solid var(--red);
   background:#fff7d7;
@@ -147,10 +137,8 @@ h2 { margin:0 0 8px; color:var(--dark-red); font-size:27px; }
   margin-top:16px;
   color:#604b32;
 }
-
-footer { text-align:center; padding:25px; color:#7d6b57; font-size:13px; }
-
-input[type=password] {
+footer{text-align:center;padding:25px;color:#7d6b57;font-size:13px}
+input[type=password]{
   width:100%;
   max-width:420px;
   padding:15px 17px;
@@ -159,10 +147,8 @@ input[type=password] {
   font-size:17px;
   outline:none;
 }
-
-input[type=password]:focus { border-color:var(--red); }
-
-.primary {
+input[type=password]:focus{border-color:var(--red)}
+.primary{
   border:0;
   margin-top:12px;
   padding:14px 22px;
@@ -174,22 +160,21 @@ input[type=password]:focus { border-color:var(--red); }
   cursor:pointer;
   box-shadow:0 8px 18px rgba(215,25,32,.22);
 }
-
-.error { color:var(--red); font-weight:800; margin-top:10px; min-height:20px; }
-.small { font-size:13px; color:#806d56; }
-
-@media(max-width:600px) {
-  .header-inner { flex-direction:column; text-align:center; }
-  .logo { width:90px; height:90px; }
-  .panel { padding:20px; }
+.error{color:var(--red);font-weight:800;margin-top:10px;min-height:20px}
+.small{font-size:13px;color:#806d56}
+@media(max-width:600px){
+  .header-inner{flex-direction:column;text-align:center}
+  .logo{width:90px;height:90px}
+  .panel{padding:20px}
+}
+@media(prefers-reduced-motion:reduce){
+  .card{transition:none}
+  .card:hover{transform:none}
 }
 </style>
-
-<!-- Cloudflare Turnstile script -->
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
-
 <body>
+
 <header>
   <div class="header-inner">
     <img class="logo" src="pie-logo.png" alt="PIE Classes logo">
@@ -205,18 +190,10 @@ input[type=password]:focus { border-color:var(--red); }
   <section id="login" class="panel">
     <h2>🔐 Student Access</h2>
     <p class="subtitle">Enter the PIE Classes study portal password to continue.</p>
-
     <input id="password" type="password" placeholder="Enter password" autocomplete="off">
-    <br><br>
-
-    <!-- Cloudflare Turnstile robot check -->
-    <div
-      class="cf-turnstile"
-      data-sitekey="0x4AAAAAAEywia-G5-qIQPYr">
-    </div>
-
+    <br>
     <button class="primary" onclick="login()">Enter Study Portal →</button>
-    <div id="loginError" class="error"></div>
+    <div id="loginError" class="error" role="status" aria-live="polite"></div>
   </section>
 
   <section id="portal" class="panel hidden">
@@ -224,15 +201,19 @@ input[type=password]:focus { border-color:var(--red); }
       <h2>Choose your Board</h2>
       <p class="subtitle">Select your curriculum to continue.</p>
       <div class="grid">
-        <button class="card" onclick="chooseBoard('ICSE')"><span class="icon">📘</span>ICSE</button>
-        <button class="card" onclick="chooseBoard('CBSE')"><span class="icon">📕</span>CBSE</button>
+        <button class="card" onclick="chooseBoard('ICSE')">
+          <span class="icon">📘</span>ICSE
+        </button>
+        <button class="card" onclick="chooseBoard('CBSE')">
+          <span class="icon">📕</span>CBSE
+        </button>
       </div>
     </div>
 
     <div id="classScreen" class="hidden">
       <button class="back" onclick="showBoards()">← Back to Boards</button>
       <h2 id="classTitle"></h2>
-      <p class="subtitle">Choose your class.</p>
+      <p class="subtitle">Choose your class or open Special Classes.</p>
       <div id="classGrid" class="grid"></div>
     </div>
 
@@ -249,8 +230,14 @@ input[type=password]:focus { border-color:var(--red); }
 <footer>© 2026 PIE Classes • Prateeti Institute for Excellence</footer>
 
 <script>
-/* Change this to a new password before publishing. */
-const PASSWORD = "Loha_Singh";
+/* Change this to your chosen website password before publishing. */
+const PASSWORD = "PIE#Students";
+
+/* Special Classes folders for each board. */
+const specialClasses = {
+  ICSE: "https://drive.google.com/drive/folders/1Yokh6sygaCBteC9Ynd1VmrKT03v1zcLS?usp=drive_link",
+  CBSE: "https://drive.google.com/drive/folders/1-AubRfTy9kuAoSwmtAsmSSb90KvwzHDW?usp=drive_link"
+};
 
 const data = {
   ICSE: {
@@ -263,7 +250,9 @@ const data = {
       "Geography":"https://drive.google.com/drive/folders/1hz6FNlBOQ9jOOSxDGVNXclCJY-DK2Tc8?usp=drive_link",
       "Hindi":"https://drive.google.com/drive/folders/13EhFiwgYl46-c-EQNML4ixKfqOHWFCf1?usp=drive_link",
       "English Literature":"https://drive.google.com/drive/folders/18AE0m620ren6_R8WIKlTWZ2IFdDMU8VK?usp=drive_link",
-      "English Language":"https://drive.google.com/drive/folders/1qgSqscx9Atx6jXB3N3humR3yynvQU26t?usp=drive_link"
+      "English Language":"https://drive.google.com/drive/folders/1qgSqscx9Atx6jXB3N3humR3yynvQU26t?usp=drive_link",
+      "Commerce":"https://drive.google.com/drive/folders/1jMx-PX6d0eHlnREAt_G9g-C4y2izuDrn?usp=drive_link",
+      "Economics":"https://drive.google.com/drive/folders/1d5qfhKPVIarKf1PsOMt9jdOdFE9gHD5r?usp=drive_link"
     },
     "Class VII": {
       "Mathematics":"https://drive.google.com/drive/folders/1U8TnRoWPpR-1rXHsEN8OFPyl9KLXtxg4?usp=drive_link",
@@ -274,7 +263,9 @@ const data = {
       "Geography":"https://drive.google.com/drive/folders/1nQPvXTUwEmMlgZ89Cb4FoauoBkuoOmwp?usp=drive_link",
       "Hindi":"https://drive.google.com/drive/folders/1Lq9cjkpi6XB0DTvFVnY87Ek3iU-6vm2T?usp=drive_link",
       "English Literature":"https://drive.google.com/drive/folders/1dMFp86Fr3cqr0HsJ2QFZGUk4Ea6Tbvfj?usp=drive_link",
-      "English Language":"https://drive.google.com/drive/folders/1bRmg6ynsNzHiW2fkrQuu0HZK7VzYfB0a?usp=drive_link"
+      "English Language":"https://drive.google.com/drive/folders/1bRmg6ynsNzHiW2fkrQuu0HZK7VzYfB0a?usp=drive_link",
+      "Commerce":"https://drive.google.com/drive/folders/1j1OzgI3aI2DYi6wnoreo7BopPrme26_5?usp=drive_link",
+      "Economics":"https://drive.google.com/drive/folders/151dOHuLjorAeImFmtWj5WSn-wEQZ3cPG?usp=drive_link"
     },
     "Class VIII": {
       "Mathematics":"https://drive.google.com/drive/folders/1L92asJ7SxCwInWCBdMSF7CqcizmgAt_r?usp=drive_link",
@@ -285,7 +276,9 @@ const data = {
       "Geography":"https://drive.google.com/drive/folders/1z5S7FR5f9XprJqKef31flm3hDuKqaYzO?usp=drive_link",
       "Hindi":"https://drive.google.com/drive/folders/18g2WXwgtn3YO5XOmozqBdWvBPAtX5Yw4?usp=drive_link",
       "English Literature":"https://drive.google.com/drive/folders/10UWU1FSrZcA7daI_oQIx31fUNAr9pMIY?usp=drive_link",
-      "English Language":"https://drive.google.com/drive/folders/136RfBt5wHx9Hposp6Rm8hPK4va0qpU1p?usp=drive_link"
+      "English Language":"https://drive.google.com/drive/folders/136RfBt5wHx9Hposp6Rm8hPK4va0qpU1p?usp=drive_link",
+      "Commerce":"https://drive.google.com/drive/folders/1Ma2u3Do82j6pVEA7JR3pwQxsXNVLS67W?usp=drive_link",
+      "Economics":"https://drive.google.com/drive/folders/1aNfYXB57-AjCKu7Jd8NAchjMuiIY_SOo?usp=drive_link"
     },
     "Class IX": {
       "Mathematics":"https://drive.google.com/drive/folders/1gX3mIkPyPah62qNBhgceymdpB7N3PTs0?usp=drive_link",
@@ -314,7 +307,6 @@ const data = {
       "Economics":"https://drive.google.com/drive/folders/1ZNqOtBRKlEofAY-af2-qX0zX7Ay9z2k-?usp=drive_link"
     }
   },
-
   CBSE: {
     "Class VI": {
       "Mathematics":"https://drive.google.com/drive/folders/1zHCTJtyF3bgY5vBVVIyHyx_e1mSdqKmE?usp=drive_link",
@@ -362,68 +354,94 @@ const data = {
 let selectedBoard = "";
 let selectedClass = "";
 
-function login() {
+function login(){
   const value = document.getElementById("password").value;
-
-  if (value === PASSWORD) {
+  if(value === PASSWORD){
     document.getElementById("login").classList.add("hidden");
     document.getElementById("portal").classList.remove("hidden");
     document.getElementById("loginError").textContent = "";
-  } else {
-    document.getElementById("loginError").textContent =
-      "Incorrect password. Please try again.";
+  }else{
+    document.getElementById("loginError").textContent = "Incorrect password. Please try again.";
   }
 }
 
-document.getElementById("password").addEventListener("keydown", event => {
-  if (event.key === "Enter") login();
+document.getElementById("password").addEventListener("keydown", event=>{
+  if(event.key === "Enter") login();
 });
 
-function chooseBoard(board) {
+function openDrive(url){
+  window.open(url,"_blank","noopener,noreferrer");
+}
+
+function chooseBoard(board){
   selectedBoard = board;
+
   document.getElementById("boardScreen").classList.add("hidden");
   document.getElementById("subjectScreen").classList.add("hidden");
   document.getElementById("classScreen").classList.remove("hidden");
+
   document.getElementById("classTitle").textContent = board + " Classes";
 
   const grid = document.getElementById("classGrid");
   grid.innerHTML = "";
 
-  Object.keys(data[board]).forEach(cls => {
+  /* Add the Special Classes card first, beneath the selected board. */
+  const specialButton = document.createElement("button");
+  specialButton.className = "card special";
+  specialButton.innerHTML = '<span class="icon">⭐</span>Special Classes';
+  specialButton.addEventListener("click",()=>{
+    openDrive(specialClasses[selectedBoard]);
+  });
+  grid.appendChild(specialButton);
+
+  Object.keys(data[board]).forEach(cls=>{
     const button = document.createElement("button");
     button.className = "card";
-    button.innerHTML = `<span class="icon">🎓</span>${cls}`;
-    button.onclick = () => chooseClass(cls);
+
+    const icon = document.createElement("span");
+    icon.className = "icon";
+    icon.textContent = "🎓";
+
+    button.appendChild(icon);
+    button.appendChild(document.createTextNode(cls));
+    button.addEventListener("click",()=>chooseClass(cls));
     grid.appendChild(button);
   });
 }
 
-function chooseClass(cls) {
+function chooseClass(cls){
   selectedClass = cls;
+
   document.getElementById("classScreen").classList.add("hidden");
   document.getElementById("subjectScreen").classList.remove("hidden");
   document.getElementById("subjectTitle").textContent =
-    `${selectedBoard} • ${selectedClass}`;
+    selectedBoard + " • " + selectedClass;
 
   const grid = document.getElementById("subjectGrid");
   grid.innerHTML = "";
 
-  Object.entries(data[selectedBoard][selectedClass]).forEach(([subject, url]) => {
+  Object.entries(data[selectedBoard][selectedClass]).forEach(([subject,url])=>{
     const button = document.createElement("button");
     button.className = "card subject";
-    button.innerHTML = `<span class="icon">📚</span>${subject}`;
-    button.onclick = () => window.open(url, "_blank", "noopener,noreferrer");
+
+    const icon = document.createElement("span");
+    icon.className = "icon";
+    icon.textContent = "📚";
+
+    button.appendChild(icon);
+    button.appendChild(document.createTextNode(subject));
+    button.addEventListener("click",()=>openDrive(url));
     grid.appendChild(button);
   });
 }
 
-function showBoards() {
+function showBoards(){
   document.getElementById("classScreen").classList.add("hidden");
   document.getElementById("subjectScreen").classList.add("hidden");
   document.getElementById("boardScreen").classList.remove("hidden");
 }
 
-function showClasses() {
+function showClasses(){
   document.getElementById("subjectScreen").classList.add("hidden");
   document.getElementById("classScreen").classList.remove("hidden");
 }
